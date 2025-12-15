@@ -1,6 +1,7 @@
 package bssm.be.auth.service;
 
 import bssm.be.auth.dto.AuthResponse;
+import bssm.be.auth.dto.RegisterRequest;
 import bssm.be.common.security.JwtTokenProvider;
 import bssm.be.user.domain.User;
 import bssm.be.user.service.UserService;
