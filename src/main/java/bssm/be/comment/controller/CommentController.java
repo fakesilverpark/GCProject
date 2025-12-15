@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -26,5 +28,10 @@ public class CommentController {
                                                   @Valid @RequestBody CommentCreateRequest request) {
         User user = userService.findById(principal.getUserId());
         return ResponseEntity.ok(commentService.create(articleId, request, user));
+    }
+
+    @GetMapping("/articles/{articleId}/comments")
+    public ResponseEntity<List<CommentResponse>> readAll(@PathVariable Long articleId) {
+        return ResponseEntity.ok(commentService.readAll(articleId));
     }
 }
