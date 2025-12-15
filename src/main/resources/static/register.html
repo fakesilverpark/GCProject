@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 - GC Board Plus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-hover: #f1f5f9;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #dbeafe;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 헤더 */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* 메인 컨테이너 */
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .register-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .register-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .register-header h2 {
+            font-size: 1.875rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .register-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* 폼 */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.625rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .label-with-hint {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hint {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--surface);
+            box-shadow: 0 0 0 4px var(--accent-light);
+        }
+
+        input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        input.error {
+            border-color: var(--danger);
+        }
+
+        input.success {
+            border-color: var(--success);
+        }
+
+        .input-message {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .input-message.error {
+            color: var(--danger);
+        }
+
+        .input-message.success {
+            color: var(--success);
+        }
+
+        /* 비밀번호 강도 표시 */
+        .password-strength {
+            margin-top: 0.75rem;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak .strength-fill {
+            width: 33%;
+            background: var(--danger);
+        }
+
+        .strength-medium .strength-fill {
+            width: 66%;
+            background: var(--warning);
+        }
+
+        .strength-strong .strength-fill {
+            width: 100%;
+            background: var(--success);
+        }
+
+        .strength-text {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        /* 버튼 */
+        button {
+            width: 100%;
+            padding: 1.125rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 구분선 */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* 링크 */
+        .link-group {
+            text-align: center;
+            padding-top: 1rem;
+        }
+
+        .link-group p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .link-group a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .link-group a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        /* 토스트 */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            min-width: 300px;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .toast.error {
+            border-color: var(--danger);
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* 뒤로가기 버튼 */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .register-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .register-header h2 {
+                font-size: 1.5rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <a href="index.html" class="logo-section">
+            <div class="logo">📦</div>
+            <div class="brand">
+                <h1>GC Board Plus</h1>
+                <p>분실물 알림판</p>
+            </div>
+        </a>
+        <a href="index.html" class="back-link">
+            ← 홈으로 돌아가기
+        </a>
+    </div>
+</header>
+
+<main>
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                <div class="register-icon">✨</div>
+                <h2>회원가입</h2>
+                <p>새로운 계정을 만들어 시작하세요</p>
+            </div>
+
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="username">아이디</label>
+                    <input
+                            type="text"
+                            id="username"
+                            placeholder="사용하실 아이디를 입력하세요"
+                            required
+                            autocomplete="username"
+                    >
+                    <div id="username-message" class="input-message" style="display:none;"></div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-with-hint">
+                        <label for="password">비밀번호</label>
+                        <span class="hint">최소 6자</span>
+                    </div>
+                    <input
+                            type="password"
+                            id="password"
+                            placeholder="비밀번호를 입력하세요"
+                            required
+                            autocomplete="new-password"
+                    >
+                    <div class="password-strength" id="password-strength" style="display:none;">
+                        <div class="strength-bar">
+                            <div class="strength-fill"></div>
+                        </div>
+                        <div class="strength-text"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password-confirm">비밀번호 확인</label>
+                    <input
+                            type="password"
+                            id="password-confirm"
+                            placeholder="비밀번호를 다시 입력하세요"
+                            required
+                            autocomplete="new-password"
+                    >
+                    <div id="password-confirm-message" class="input-message" style="display:none;"></div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="register-btn">
+                    회원가입하기
+                </button>
+            </form>
+
+            <div class="divider">또는</div>
+
+            <div class="link-group">
+                <p>
+                    이미 계정이 있으신가요?
+                    <a href="login.html">로그인</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+    const isDevFrontend = window.location.port && window.location.port !== '8080';
+    const API_BASE = isDevFrontend ? 'http://localhost:8080' : window.location.origin;
+
+    const el = {
+        form: document.getElementById('register-form'),
+        username: document.getElementById('username'),
+        password: document.getElementById('password'),
+        passwordConfirm: document.getElementById('password-confirm'),
+        registerBtn: document.getElementById('register-btn'),
+        usernameMessage: document.getElementById('username-message'),
+        passwordConfirmMessage: document.getElementById('password-confirm-message'),
+        passwordStrength: document.getElementById('password-strength'),
+        toast: document.getElementById('toast-container')
+    };
+
+    function toast(message, type = 'info') {
+        const div = document.createElement('div');
+        div.className = `toast ${type === 'error' ? 'error' : ''}`;
+        div.innerHTML = `
+                <span class="toast-icon">${type === 'error' ? '❌' : '✅'}</span>
+                <span>${message}</span>
+            `;
+        el.toast.appendChild(div);
+        setTimeout(() => div.remove(), 3200);
+    }
+
+    function buildUrl(path) {
+        if (path.startsWith('http://') || path.startsWith('https://')) return path;
+        return API_BASE + path;
+    }
+
+    async function api(path, options = {}) {
+        const headers = Object.assign({}, options.headers || {});
+        if (!(options.body instanceof FormData)) {
+            headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+        }
+        const response = await fetch(buildUrl(path), Object.assign({}, options, { headers }));
+        const text = await response.text();
+        let payload = null;
+        try {
+            payload = text ? JSON.parse(text) : null;
+        } catch (e) {
+            payload = text;
+        }
+        if (!response.ok) {
+            const message = payload?.message || payload?.errorMessage || '요청이 실패했습니다';
+            throw new Error(message);
+        }
+        return payload;
+    }
+
+    // 비밀번호 강도 체크
+    function checkPasswordStrength(password) {
+        if (!password) {
+            el.passwordStrength.style.display = 'none';
+            return;
+        }
+
+        el.passwordStrength.style.display = 'block';
+        const strengthBar = el.passwordStrength.querySelector('.strength-bar');
+        const strengthText = el.passwordStrength.querySelector('.strength-text');
+
+        let strength = 0;
+        let text = '';
+
+        if (password.length >= 6) strength++;
+        if (password.length >= 10) strength++;
+        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+        strengthBar.className = 'strength-bar';
+        if (strength <= 2) {
+            strengthBar.classList.add('strength-weak');
+            text = '약함';
+        } else if (strength <= 4) {
+            strengthBar.classList.add('strength-medium');
+            text = '보통';
+        } else {
+            strengthBar.classList.add('strength-strong');
+            text = '강함';
+        }
+
+        strengthText.textContent = `비밀번호 강도: ${text}`;
+    }
+
+    // 비밀번호 확인 체크
+    function checkPasswordMatch() {
+        const password = el.password.value;
+        const passwordConfirm = el.passwordConfirm.value;
+
+        if (!passwordConfirm) {
+            el.passwordConfirmMessage.style.display = 'none';
+            el.passwordConfirm.classList.remove('success', 'error');
+            return;
+        }
+
+        if (password === passwordConfirm) {
+            el.passwordConfirmMessage.style.display = 'flex';
+            el.passwordConfirmMessage.className = 'input-message success';
+            el.passwordConfirmMessage.innerHTML = '✓ 비밀번호가 일치합니다';
+            el.passwordConfirm.classList.remove('error');
+            el.passwordConfirm.classList.add('success');
+        } else {
+            el.passwordConfirmMessage.style.display = 'flex';
+            el.passwordConfirmMessage.className = 'input-message error';
+            el.passwordConfirmMessage.innerHTML = '✗ 비밀번호가 일치하지 않습니다';
+            el.passwordConfirm.classList.remove('success');
+            el.passwordConfirm.classList.add('error');
+        }
+    }
+
+    // 아이디 유효성 검사
+    function validateUsername() {
+        const username = el.username.value.trim();
+
+        if (!username) {
+            el.usernameMessage.style.display = 'none';
+            el.username.classList.remove('success', 'error');
+            return true;
+        }
+
+        if (username.length < 3) {
+            el.usernameMessage.style.display = 'flex';
+            el.usernameMessage.className = 'input-message error';
+            el.usernameMessage.innerHTML = '✗ 아이디는 3자 이상이어야 합니다';
+            el.username.classList.add('error');
+            el.username.classList.remove('success');
+            return false;
+        }
+
+        el.usernameMessage.style.display = 'flex';
+        el.usernameMessage.className = 'input-message success';
+        el.usernameMessage.innerHTML = '✓ 사용 가능한 아이디입니다';
+        el.username.classList.add('success');
+        el.username.classList.remove('error');
+        return true;
+    }
+
+    async function handleRegister(event) {
+        event.preventDefault();
+
+        const username = el.username.value.trim();
+        const password = el.password.value.trim();
+        const passwordConfirm = el.passwordConfirm.value.trim();
+
+        // 검증
+        if (!username || !password || !passwordConfirm) {
+            toast('모든 필드를 입력해주세요.', 'error');
+            return;
+        }
+
+        if (username.length < 3) {
+            toast('아이디는 3자 이상이어야 합니다.', 'error');
+            return;
+        }
+
+        if (password.length < 6) {
+            toast('비밀번호는 6자 이상이어야 합니다.', 'error');
+            return;
+        }
+
+        if (password !== passwordConfirm) {
+            toast('비밀번호가 일치하지 않습니다.', 'error');
+            return;
+        }
+
+        // 버튼 로딩 상태
+        el.registerBtn.disabled = true;
+        el.registerBtn.classList.add('btn-loading');
+
+        try {
+            const data = await api('/api/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({
+                    displayName: username,
+                    password: password
+                })
+            });
+
+            // 토큰 저장
+            localStorage.setItem('gc-token', data.token);
+            localStorage.setItem('gc-user', JSON.stringify(data.user));
+
+            toast('회원가입 성공! 메인 페이지로 이동합니다.');
+
+            // 1초 후 메인 페이지로 이동
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+
+        } catch (error) {
+            toast(error.message, 'error');
+            el.registerBtn.disabled = false;
+            el.registerBtn.classList.remove('btn-loading');
+        }
+    }
+
+    // 이미 로그인된 경우 메인 페이지로 리다이렉트
+    const token = localStorage.getItem('gc-token');
+    if (token) {
+        window.location.href = 'index.html';
+    }
+
+    // 이벤트 리스너
+    el.form.addEventListener('submit', handleRegister);
+    el.password.addEventListener('input', () => {
+        checkPasswordStrength(el.password.value);
+        checkPasswordMatch();
+    });
+    el.passwordConfirm.addEventListener('input', checkPasswordMatch);
+    el.username.addEventListener('input', validateUsername);
+</script>
+</body>
+</html>
