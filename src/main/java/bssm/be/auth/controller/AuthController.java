@@ -1,5 +1,8 @@
 package bssm.be.auth.controller;
 
+import bssm.be.auth.dto.AuthResponse;
+import bssm.be.auth.dto.LoginRequest;
+import bssm.be.auth.dto.RegisterRequest;
 import bssm.be.auth.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
