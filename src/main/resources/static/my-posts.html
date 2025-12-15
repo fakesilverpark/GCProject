@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 게시글 - GC Board Plus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-hover: #f1f5f9;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #dbeafe;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 헤더 */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        /* 메인 */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-title-section h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* 카드 */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        /* 배지 */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 0.875rem;
+            border-radius: 8px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            border: 1px solid;
+        }
+
+        .badge-lost {
+            background: var(--danger-light);
+            color: #dc2626;
+            border-color: #fca5a5;
+        }
+
+        .badge-found {
+            background: var(--success-light);
+            color: #059669;
+            border-color: #6ee7b7;
+        }
+
+        .badge-resolved {
+            background: var(--accent-light);
+            color: #2563eb;
+            border-color: #93c5fd;
+        }
+
+        /* 게시글 */
+        .article {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .article:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+
+        .article-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .article-body {
+            margin: 1rem 0;
+            line-height: 1.7;
+            color: var(--text);
+            white-space: pre-wrap;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* 버튼 */
+        button, .btn {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--surface-hover);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 편집 폼 */
+        .edit-form {
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: var(--bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 0.9375rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-actions-inline {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* 빈 상태 */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .empty-state-desc {
+            margin-bottom: 1.5rem;
+        }
+
+        /* 토스트 */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            min-width: 300px;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .toast.error {
+            border-color: var(--danger);
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            main {
+                padding: 2rem 1rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .page-title-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .article-header {
+                flex-direction: column;
+            }
+
+            .article-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <a href="index.html" class="logo-section">
+            <div class="logo">📦</div>
+            <div class="brand">
+                <h1>GC Board Plus</h1>
+                <p>분실물 알림판</p>
+            </div>
+        </a>
+        <a href="index.html" class="back-link">
+            ← 목록으로 돌아가기
+        </a>
+    </div>
+</header>
+
+<main>
+    <div class="page-header">
+        <div class="page-title-section">
+            <h2>📋 내 게시글</h2>
+            <p class="page-description">내가 작성한 분실/습득 게시글을 관리하세요</p>
+        </div>
+        <div class="page-actions">
+            <button class="btn-secondary" id="reload-btn">🔄 새로고침</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div id="article-list"></div>
+        <button id="load-more" class="btn-secondary" style="display:none; width:100%; margin-top:1rem;">
+            더보기
+        </button>
+    </div>
+</main>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+    const isDevFrontend = window.location.port && window.location.port !== '8080';
+    const API_BASE = isDevFrontend ? 'http://localhost:8080' : window.location.origin;
+
+    const MOODS = {
+        lost: { label: '분실', emoji: '🆘' },
+        found: { label: '습득', emoji: '📦' },
+        resolved: { label: '해결', emoji: '✅' }
+    };
+
+    const state = {
+        token: localStorage.getItem('gc-token'),
+        user: JSON.parse(localStorage.getItem('gc-user') || 'null'),
+        nextCursor: null,
+        loading: false
+    };
+
+    const el = {
+        articleList: document.getElementById('article-list'),
+        loadMore: document.getElementById('load-more'),
+        reloadBtn: document.getElementById('reload-btn'),
+        toast: document.getElementById('toast-container')
+    };
+
+    // 로그인 체크
+    if (!state.token || !state.user) {
+        alert('로그인이 필요합니다.');
+        window.location.href = 'login.html';
+    }
+
+    function toast(message, type = 'info') {
+        const div = document.createElement('div');
+        div.className = `toast ${type === 'error' ? 'error' : ''}`;
+        div.innerHTML = `
+                <span class="toast-icon">${type === 'error' ? '❌' : '✅'}</span>
+                <span>${message}</span>
+            `;
+        el.toast.appendChild(div);
+        setTimeout(() => div.remove(), 3200);
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    function buildUrl(path) {
+        if (path.startsWith('http://') || path.startsWith('https://')) return path;
+        return API_BASE + path;
+    }
+
+    async function api(path, options = {}) {
+        const headers = Object.assign({}, options.headers || {});
+        if (!(options.body instanceof FormData)) {
+            headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+        }
+        if (state.token) {
+            headers['Authorization'] = 'Bearer ' + state.token;
+        }
+        const response = await fetch(buildUrl(path), Object.assign({}, options, { headers }));
+        const text = await response.text();
+        let payload = null;
+        try {
+            payload = text ? JSON.parse(text) : null;
+        } catch (e) {
+            payload = text;
+        }
+        if (!response.ok) {
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('gc-token');
+                localStorage.removeItem('gc-user');
+                alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+                window.location.href = 'login.html';
+                return;
+            }
+            const message = payload?.message || payload?.errorMessage || '요청이 실패했습니다';
+            throw new Error(message);
+        }
+        return payload;
+    }
+
+    function resetFeed() {
+        state.nextCursor = null;
+        el.articleList.innerHTML = '';
+        loadArticles(true);
+    }
+
+    async function loadArticles(reset = false) {
+        if (state.loading) return;
+        state.loading = true;
+
+        const url = new URL('/api/articles/mine', API_BASE);
+        url.searchParams.append('size', 5);
+        if (!reset && state.nextCursor) url.searchParams.append('lastId', state.nextCursor);
+
+        try {
+            const data = await api(url.toString());
+            if (reset) el.articleList.innerHTML = '';
+
+            if (!data.items.length && !el.articleList.children.length) {
+                el.articleList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📝</div>
+                            <div class="empty-state-title">작성한 게시글이 없습니다</div>
+                            <div class="empty-state-desc">첫 번째 분실/습득 게시글을 작성해보세요</div>
+                            <a href="write.html" class="btn btn-primary">✏️ 게시글 작성하기</a>
+                        </div>
+                    `;
+            } else {
+                data.items.forEach(article => renderArticle(article));
+            }
+
+            state.nextCursor = data.nextCursor;
+            el.loadMore.style.display = state.nextCursor ? 'block' : 'none';
+        } catch (e) {
+            toast(e.message, 'error');
+        } finally {
+            state.loading = false;
+        }
+    }
+
+    function renderArticle(article) {
+        const moodMeta = MOODS[article.mood] || MOODS.lost;
+        const articleEl = document.createElement('div');
+        articleEl.className = 'article';
+        articleEl.id = `article-${article.id}`;
+
+        // 캐시에 저장
+        articlesCache[article.id] = article;
+
+        const actionsHtml = `
+                <div class="article-actions">
+                    ${article.mood !== 'resolved' ? `
+                        <button class="btn-success" onclick="markResolved(${article.id})">
+                            ✅ 해결됨으로 변경
+                        </button>
+                    ` : ''}
+                    <button class="btn-secondary" onclick="editArticle(${article.id})">
+                        ✏️ 수정
+                    </button>
+                    <button class="btn-danger" onclick="deleteArticle(${article.id})">
+                        🗑️ 삭제
+                    </button>
+                </div>
+            `;
+
+        articleEl.innerHTML = `
+                <div class="article-header">
+                    <div>
+                        <div class="article-title">${escapeHtml(article.title)}</div>
+                        <div class="article-meta">
+                            <span>${escapeHtml(article.createdAt.replace('T', ' ').substring(0, 19))}</span>
+                            <span>·</span>
+                            <span>#${article.id}</span>
+                        </div>
+                    </div>
+                    <span class="badge badge-${article.mood}">${moodMeta.emoji} ${moodMeta.label}</span>
+                </div>
+                <div class="article-body">${escapeHtml(article.content)}</div>
+                ${actionsHtml}
+            `;
+
+        el.articleList.appendChild(articleEl);
+    }
+
+    // 게시글 데이터를 저장할 객체
+    const articlesCache = {};
+
+    async function editArticle(articleId) {
+        const articleEl = document.getElementById(`article-${articleId}`);
+        if (!articleEl) return;
+
+        // 이미 편집 폼이 있으면 제거
+        const existingForm = articleEl.querySelector('.edit-form');
+        if (existingForm) {
+            existingForm.remove();
+            return;
+        }
+
+        // 캐시된 데이터 사용 또는 새로 가져오기
+        let targetArticle = articlesCache[articleId];
+
+        if (!targetArticle) {
+            toast('게시글을 찾을 수 없습니다.', 'error');
+            return;
+        }
+
+        // 편집 폼 생성
+        const editForm = document.createElement('div');
+        editForm.className = 'edit-form';
+
+        const titleValue = targetArticle.title.replace(/"/g, '&quot;');
+        const contentValue = targetArticle.content.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        editForm.innerHTML = `
+                <div class="form-group">
+                    <label>제목</label>
+                    <input type="text" id="edit-title-${articleId}" value="${titleValue}">
+                </div>
+                <div class="form-group">
+                    <label>상태</label>
+                    <select id="edit-mood-${articleId}">
+                        <option value="lost" ${targetArticle.mood === 'lost' ? 'selected' : ''}>🆘 분실</option>
+                        <option value="found" ${targetArticle.mood === 'found' ? 'selected' : ''}>📦 습득</option>
+                        <option value="resolved" ${targetArticle.mood === 'resolved' ? 'selected' : ''}>✅ 해결</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>내용</label>
+                    <textarea id="edit-content-${articleId}">${contentValue}</textarea>
+                </div>
+                <div class="form-actions-inline">
+                    <button class="btn-primary" onclick="saveArticle(${articleId})">💾 저장</button>
+                    <button class="btn-secondary" onclick="cancelEdit(${articleId})">취소</button>
+                </div>
+            `;
+
+        articleEl.appendChild(editForm);
+    }
+
+    function cancelEdit(articleId) {
+        const articleEl = document.getElementById(`article-${articleId}`);
+        const editForm = articleEl.querySelector('.edit-form');
+        if (editForm) editForm.remove();
+    }
+
+    async function saveArticle(articleId) {
+        const title = document.getElementById(`edit-title-${articleId}`).value.trim();
+        const content = document.getElementById(`edit-content-${articleId}`).value.trim();
+        const mood = document.getElementById(`edit-mood-${articleId}`).value;
+
+        if (!title || !content) {
+            toast('제목과 내용을 모두 입력해주세요.', 'error');
+            return;
+        }
+
+        try {
+            await api(`/api/articles/${articleId}`, {
+                method: 'PUT',
+                body: JSON.stringify({ title, content, mood })
+            });
+
+            toast('게시글이 수정되었습니다.');
+            resetFeed();
+        } catch (e) {
+            toast(e.message, 'error');
+        }
+    }
+
+    async function markResolved(articleId) {
+        if (!confirm('이 게시글을 해결됨으로 변경하시겠습니까?')) return;
+
+        try {
+            // 먼저 게시글 정보를 가져옴
+            const articles = await api(`/api/articles?size=100`);
+            const article = articles.items.find(a => a.id === articleId);
+
+            if (!article) {
+                toast('게시글을 찾을 수 없습니다.', 'error');
+                return;
+            }
+
+            await api(`/api/articles/${articleId}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    title: article.title,
+                    content: article.content,
+                    mood: 'resolved'
+                })
+            });
+
+            toast('해결됨으로 변경되었습니다.');
+            resetFeed();
+        } catch (e) {
+            toast(e.message, 'error');
+        }
+    }
+
+    async function deleteArticle(articleId) {
+        if (!confirm('정말 이 게시글을 삭제하시겠습니까?')) return;
+
+        try {
+            await api(`/api/articles/${articleId}`, { method: 'DELETE' });
+            toast('게시글이 삭제되었습니다.');
+
+            const articleEl = document.getElementById(`article-${articleId}`);
+            if (articleEl) articleEl.remove();
+
+            // 리스트가 비었으면 빈 상태 표시
+            if (!el.articleList.children.length) {
+                el.articleList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📝</div>
+                            <div class="empty-state-title">작성한 게시글이 없습니다</div>
+                            <div class="empty-state-desc">첫 번째 분실/습득 게시글을 작성해보세요</div>
+                            <a href="write.html" class="btn btn-primary">✏️ 게시글 작성하기</a>
+                        </div>
+                    `;
+            }
+        } catch (e) {
+            toast(e.message, 'error');
+        }
+    }
+
+    el.reloadBtn.onclick = resetFeed;
+    el.loadMore.onclick = () => loadArticles();
+
+    // 초기 로드
+    loadArticles(true);
+</script>
+</body>
+</html>
