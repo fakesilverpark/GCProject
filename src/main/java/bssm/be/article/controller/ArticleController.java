@@ -34,4 +34,12 @@ public class ArticleController {
     public ResponseEntity<ArticleResponse> readOne(@PathVariable Long id) {
         return ResponseEntity.ok(articleService.readOne(id));
     }
+
+    @GetMapping
+    public ResponseEntity<ArticleSliceResponse> readAll(
+            @RequestParam(required = false) Long lastId,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String mood) {
+        return ResponseEntity.ok(articleService.readAll(lastId, size, mood));
+    }
 }
