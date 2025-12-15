@@ -1,7 +1,10 @@
 package bssm.be.common.dto;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
 public class ErrorResponse {
     private final LocalDateTime timestamp = LocalDateTime.now();
     private final int status;
@@ -12,15 +15,4 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }
