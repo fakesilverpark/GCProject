@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GC Board Plus - 메인</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-hover: #f1f5f9;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #dbeafe;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 헤더 */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            background: transparent;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: var(--surface-hover);
+            border-color: var(--border);
+        }
+
+        .nav-link.primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .nav-link.primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .user-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        /* 메인 */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        /* 카드 */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        /* 배지 */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 0.875rem;
+            border-radius: 8px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            border: 1px solid;
+        }
+
+        .badge-lost {
+            background: var(--danger-light);
+            color: #dc2626;
+            border-color: #fca5a5;
+        }
+
+        .badge-found {
+            background: var(--success-light);
+            color: #059669;
+            border-color: #6ee7b7;
+        }
+
+        .badge-resolved {
+            background: var(--accent-light);
+            color: #2563eb;
+            border-color: #93c5fd;
+        }
+
+        /* 게시글 */
+        .article {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .article:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .article-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .article-body {
+            margin: 1rem 0;
+            line-height: 1.7;
+            color: var(--text);
+            white-space: pre-wrap;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* 버튼 */
+        button, .btn {
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--surface-hover);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        /* 모달 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 2rem;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            background: var(--surface);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+
+        .modal-close:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-article-body {
+            line-height: 1.8;
+            white-space: pre-wrap;
+            margin: 1.5rem 0;
+            font-size: 1rem;
+        }
+
+        /* 댓글 섹션 */
+        .comments-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .comments-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .comments-title .count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 28px;
+            height: 28px;
+            padding: 0 8px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* 댓글 입력 폼 */
+        .comment-form {
+            margin-bottom: 2rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .comment-form:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light);
+            background: var(--surface);
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 0.9375rem;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            resize: none;
+            min-height: 60px;
+            max-height: 200px;
+            line-height: 1.6;
+        }
+
+        .comment-form textarea:focus {
+            outline: none;
+        }
+
+        .comment-form textarea::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .comment-form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .comment-form-actions button {
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+        }
+
+        /* 댓글 아이템 */
+        .comment {
+            position: relative;
+            padding: 1.25rem;
+            background: transparent;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .comment:hover {
+            background: var(--surface-hover);
+            border-radius: 12px;
+        }
+
+        .comment.has-depth {
+            margin-left: 2.5rem;
+            border-left: 2px solid var(--border);
+            padding-left: 1rem;
+        }
+
+        .comment.has-depth::before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .comment.has-depth:hover::before {
+            opacity: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            font-size: 0.9375rem;
+            color: var(--text);
+        }
+
+        .comment-author-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: white;
+            border-radius: 8px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+        }
+
+        .comment-author-badge::before {
+            content: '작성자';
+        }
+
+        .comment-divider {
+            color: var(--border);
+            font-weight: 400;
+        }
+
+        .comment-time {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .comment-body {
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 0.875rem;
+            font-size: 0.9375rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .comment-body.deleted {
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .comment-actions button {
+            padding: 0.5rem 1rem;
+            font-size: 0.8125rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .btn-reply {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+        }
+
+        .btn-reply:hover {
+            background: var(--surface-hover);
+            color: var(--text);
+            border-color: var(--border);
+        }
+
+        .btn-reply::before {
+            content: '↩ ';
+        }
+
+        .btn-delete {
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid transparent;
+        }
+
+        .btn-delete:hover {
+            background: var(--danger-light);
+            border-color: var(--danger);
+        }
+
+        /* 답글 입력 폼 */
+        .reply-form-container {
+            margin-top: 1rem;
+        }
+
+        .reply-form {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 0.875rem;
+            transition: all 0.2s ease;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reply-form:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+            background: var(--surface);
+        }
+
+        .reply-form textarea {
+            width: 100%;
+            padding: 0.625rem;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 0.875rem;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            resize: none;
+            min-height: 50px;
+            max-height: 150px;
+            line-height: 1.6;
+        }
+
+        .reply-form textarea:focus {
+            outline: none;
+        }
+
+        .reply-form textarea::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .reply-form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 0.625rem;
+            padding-top: 0.625rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .reply-form-actions button {
+            padding: 0.5rem 1rem;
+            font-size: 0.8125rem;
+        }
+
+        /* 빈 상태 */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 토스트 */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            min-width: 300px;
+            box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .toast.error {
+            border-color: var(--danger);
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* 로그인 안내 박스 */
+        .login-prompt {
+            text-align: center;
+            padding: 2rem;
+            background: var(--surface-hover);
+            border-radius: 16px;
+            border: 2px dashed var(--border);
+        }
+
+        .login-prompt-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .login-prompt p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 2rem 1rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .modal {
+                margin: 1rem;
+            }
+
+            .modal-header, .modal-body {
+                padding: 1.5rem;
+            }
+
+            .comment.has-depth {
+                margin-left: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <div class="logo-section">
+            <div class="logo">📦</div>
+            <div class="brand">
+                <h1>GC Board Plus</h1>
+                <p>분실물 알림판</p>
+            </div>
+        </div>
+        <nav id="nav"></nav>
+    </div>
+</header>
+
+<main>
+    <div class="hero">
+        <h2>분실물을 찾아드립니다</h2>
+        <p>분실/습득 정보를 공유하고 빠르게 연결하세요</p>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">최근 분실/습득</h2>
+            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                <select id="mood-filter" style="padding: 0.75rem 1rem; background: var(--surface-hover); border: 1px solid var(--border); border-radius: 10px; font-size: 0.875rem; font-weight: 600; cursor: pointer; font-family: 'Pretendard', sans-serif;">
+                    <option value="">전체 보기</option>
+                    <option value="lost">분실</option>
+                    <option value="found">습득</option>
+                    <option value="resolved">해결</option>
+                </select>
+                <button class="btn-secondary" id="reload-btn">새로고침</button>
+            </div>
+        </div>
+        <div id="article-list"></div>
+        <button id="load-more" class="btn-secondary" style="display:none; width:100%; margin-top:1rem;">
+            다음 5개 불러오기
+        </button>
+    </div>
+</main>
+
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+    <div class="modal">
+        <div class="modal-header">
+            <div style="flex: 1;">
+                <h2 id="modal-title" style="font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem;"></h2>
+                <div id="modal-meta" class="article-meta"></div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div id="modal-content" class="modal-article-body"></div>
+
+            <div class="comments-section">
+                <h3 class="comments-title">
+                    댓글
+                    <span class="count" id="comment-count">0</span>
+                </h3>
+                <div class="comment-form" id="comment-form-container">
+                    <textarea id="comment-input" placeholder="댓글을 입력하세요... (Ctrl+Enter로 등록)" rows="1" oninput="autoResize(this)"></textarea>
+                    <div class="comment-form-actions">
+                        <button class="btn-primary" onclick="submitComment()">등록</button>
+                    </div>
+                </div>
+                <div id="comments-list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+    const isDevFrontend = window.location.port && window.location.port !== '8080';
+    const API_BASE = isDevFrontend ? 'http://localhost:8080' : window.location.origin;
+
+    const MOODS = {
+        lost: { label: '분실', emoji: '🆘' },
+        found: { label: '습득', emoji: '📦' },
+        resolved: { label: '해결', emoji: '✅' }
+    };
+
+    const state = {
+        token: localStorage.getItem('gc-token'),
+        user: JSON.parse(localStorage.getItem('gc-user') || 'null'),
+        nextCursor: null,
+        loading: false,
+        moodFilter: '',
+        currentArticle: null
+    };
+
+    const el = {
+        nav: document.getElementById('nav'),
+        reload: document.getElementById('reload-btn'),
+        moodFilter: document.getElementById('mood-filter'),
+        articleList: document.getElementById('article-list'),
+        loadMore: document.getElementById('load-more'),
+        toast: document.getElementById('toast-container'),
+        modalOverlay: document.getElementById('modal-overlay'),
+        modalTitle: document.getElementById('modal-title'),
+        modalMeta: document.getElementById('modal-meta'),
+        modalContent: document.getElementById('modal-content'),
+        commentsList: document.getElementById('comments-list'),
+        commentInput: document.getElementById('comment-input'),
+        commentCount: document.getElementById('comment-count')
+    };
+
+    function autoResize(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+    }
+
+    function toast(message, type = 'info') {
+        const div = document.createElement('div');
+        div.className = `toast ${type === 'error' ? 'error' : ''}`;
+        div.innerHTML = `
+            <span class="toast-icon">${type === 'error' ? '❌' : '✅'}</span>
+            <span>${message}</span>
+        `;
+        el.toast.appendChild(div);
+        setTimeout(() => div.remove(), 3200);
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    function updateNav() {
+        if (state.user) {
+            el.nav.innerHTML = `
+                <span class="user-chip">${escapeHtml(state.user.displayName)}</span>
+                <a href="write.html" class="nav-link primary">등록하기</a>
+                <a href="my-posts.html" class="nav-link">내 게시글</a>
+                <button class="btn-secondary" id="logout-btn">로그아웃</button>
+            `;
+            document.getElementById('logout-btn').onclick = () => {
+                localStorage.removeItem('gc-token');
+                localStorage.removeItem('gc-user');
+                state.token = null;
+                state.user = null;
+                toast('로그아웃되었습니다.');
+                updateNav();
+            };
+        } else {
+            el.nav.innerHTML = `
+                <a href="login.html" class="nav-link">로그인</a>
+                <a href="register.html" class="nav-link primary">회원가입</a>
+            `;
+        }
+    }
+
+    function buildUrl(path) {
+        if (path.startsWith('http://') || path.startsWith('https://')) return path;
+        return API_BASE + path;
+    }
+
+    async function api(path, options = {}) {
+        const headers = Object.assign({}, options.headers || {});
+        if (!(options.body instanceof FormData)) {
+            headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+        }
+        if (state.token) {
+            headers['Authorization'] = 'Bearer ' + state.token;
+        }
+        const response = await fetch(buildUrl(path), Object.assign({}, options, { headers }));
+        const text = await response.text();
+        let payload = null;
+        try { payload = text ? JSON.parse(text) : null; } catch (e) { payload = text; }
+        if (!response.ok) {
+            const message = payload?.message || payload?.errorMessage || '요청이 실패했습니다';
+            throw new Error(message);
+        }
+        return payload;
+    }
+
+    function resetFeed() {
+        state.nextCursor = null;
+        el.articleList.innerHTML = '';
+        loadArticles(true);
+    }
+
+    async function loadArticles(reset = false) {
+        if (state.loading) return;
+        state.loading = true;
+        const url = new URL('/api/articles', API_BASE);
+        url.searchParams.append('size', 5);
+
+        if (state.moodFilter && state.moodFilter !== '') {
+            url.searchParams.append('mood', state.moodFilter);
+        }
+
+        if (!reset && state.nextCursor) {
+            url.searchParams.append('lastId', state.nextCursor);
+        }
+
+        try {
+            const data = await api(url.toString());
+            if (reset) el.articleList.innerHTML = '';
+            if (!data.items.length && !el.articleList.children.length) {
+                el.articleList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📦</div>
+                        <p>아직 게시글이 없습니다</p>
+                    </div>
+                `;
+            } else {
+                data.items.forEach(article => renderArticle(article));
+            }
+            state.nextCursor = data.nextCursor;
+            el.loadMore.style.display = state.nextCursor ? 'block' : 'none';
+        } catch (e) {
+            toast(e.message, 'error');
+        } finally {
+            state.loading = false;
+        }
+    }
+
+    function renderArticle(article) {
+        const moodMeta = MOODS[article.mood] || MOODS.lost;
+        const articleEl = document.createElement('div');
+        articleEl.className = 'article';
+        articleEl.onclick = () => openModal(article);
+        articleEl.innerHTML = `
+            <div class="article-header">
+                <div>
+                    <div class="article-title">${escapeHtml(article.title)}</div>
+                    <div class="article-meta">
+                        <span>${escapeHtml(article.author.displayName)}</span>
+                        <span>·</span>
+                        <span>${escapeHtml(article.createdAt.replace('T', ' ').substring(0, 19))}</span>
+                    </div>
+                </div>
+                <span class="badge badge-${article.mood}">${moodMeta.label}</span>
+            </div>
+            <div class="article-body">${escapeHtml(article.content)}</div>
+        `;
+        el.articleList.appendChild(articleEl);
+    }
+
+    async function openModal(article) {
+        state.currentArticle = article;
+        const moodMeta = MOODS[article.mood] || MOODS.lost;
+
+        el.modalTitle.textContent = article.title;
+        el.modalMeta.innerHTML = `
+            <span class="badge badge-${article.mood}">${moodMeta.label}</span>
+            <span>${escapeHtml(article.author.displayName)}</span>
+            <span>·</span>
+            <span>${escapeHtml(article.createdAt.replace('T', ' ').substring(0, 19))}</span>
+            <span>·</span>
+            <span>#${article.id}</span>
+        `;
+        el.modalContent.textContent = article.content;
+
+        if (!state.token) {
+            document.getElementById('comment-form-container').innerHTML = `
+                <div class="login-prompt">
+                    <div class="login-prompt-icon">🔒</div>
+                    <p>댓글을 작성하려면 로그인이 필요합니다</p>
+                    <a href="login.html" class="btn-primary" style="display: inline-flex;">로그인하기</a>
+                </div>
+            `;
+        } else {
+            setTimeout(() => {
+                const textarea = document.getElementById('comment-input');
+                if (textarea) {
+                    textarea.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                            e.preventDefault();
+                            submitComment();
+                        }
+                    });
+                }
+            }, 50);
+        }
+
+        el.modalOverlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        loadComments(article.id);
+    }
+
+    function closeModal() {
+        el.modalOverlay.style.display = 'none';
+        document.body.style.overflow = '';
+        state.currentArticle = null;
+        if (el.commentInput) el.commentInput.value = '';
+    }
+
+    el.modalOverlay.onclick = (e) => {
+        if (e.target === el.modalOverlay) closeModal();
+    };
+
+    async function loadComments(articleId) {
+        el.commentsList.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">댓글 불러오는 중...</p>';
+
+        try {
+            const comments = await api(`/api/articles/${articleId}/comments`);
+            el.commentCount.textContent = comments.length;
+
+            if (!comments.length) {
+                el.commentsList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;">💬</div>
+                        <p>아직 댓글이 없습니다</p>
+                        <p style="font-size: 0.875rem; margin-top: 0.5rem;">첫 댓글을 남겨보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            el.commentsList.innerHTML = '';
+            comments.forEach(comment => renderComment(comment, articleId));
+        } catch (e) {
+            el.commentsList.innerHTML = `<p style="text-align: center; color: var(--danger); padding: 2rem;">댓글을 불러올 수 없습니다: ${escapeHtml(e.message)}</p>`;
+        }
+    }
+
+    function renderComment(comment, articleId) {
+        const depth = Math.max(0, comment.path.split('/').filter(Boolean).length - 1);
+        const commentEl = document.createElement('div');
+        commentEl.className = 'comment' + (depth > 0 ? ' has-depth' : '');
+
+        const isOwner = state.user && state.user.id === comment.author.id;
+        const isArticleAuthor = state.currentArticle && state.currentArticle.author.id === comment.author.id;
+
+        let authorDisplay = escapeHtml(comment.author.displayName);
+        if (isArticleAuthor) {
+            authorDisplay = `<span class="comment-author-badge">${escapeHtml(comment.author.displayName)}</span>`;
+        } else {
+            authorDisplay = `<span class="comment-author">${escapeHtml(comment.author.displayName)}</span>`;
+        }
+
+        const replyBtnHtml = state.token && !comment.deleted
+            ? `<button class="btn-reply" onclick="openReplyForm(${comment.id}, ${articleId})">답글</button>`
+            : '';
+        const deleteBtnHtml = isOwner && !comment.deleted
+            ? `<button class="btn-delete" onclick="deleteComment(${comment.id}, ${articleId})">삭제</button>`
+            : '';
+
+        const commentBody = comment.deleted
+            ? '<div class="comment-body deleted">삭제된 댓글입니다</div>'
+            : `<div class="comment-body">${escapeHtml(comment.content)}</div>`;
+
+        commentEl.innerHTML = `
+            <div class="comment-header">
+                ${authorDisplay}
+                <span class="comment-divider">•</span>
+                <span class="comment-time">${escapeHtml(comment.createdAt.replace('T', ' ').substring(0, 19))}</span>
+            </div>
+            ${commentBody}
+            <div class="comment-actions">
+                ${replyBtnHtml}
+                ${deleteBtnHtml}
+            </div>
+            <div class="reply-form-container" id="reply-container-${comment.id}"></div>
+        `;
+
+        el.commentsList.appendChild(commentEl);
+    }
+
+    window.openReplyForm = function (parentId, articleId) {
+        if (!state.token) {
+            toast('로그인이 필요합니다.', 'error');
+            return;
+        }
+        const container = document.getElementById(`reply-container-${parentId}`);
+        if (!container) return;
+
+        if (container.innerHTML.trim()) {
+            container.innerHTML = '';
+            return;
+        }
+
+        container.innerHTML = `
+            <div class="reply-form">
+                <textarea
+                    id="reply-input-${parentId}"
+                    placeholder="답글을 입력하세요... (Ctrl+Enter로 등록)"
+                    rows="2"
+                    oninput="autoResize(this)"
+                ></textarea>
+                <div class="reply-form-actions">
+                    <button class="btn-secondary" onclick="closeReply(${parentId})">취소</button>
+                    <button class="btn-primary" onclick="submitReply(${parentId}, ${articleId})">등록</button>
+                </div>
+            </div>
+        `;
+
+        setTimeout(() => {
+            const textarea = document.getElementById(`reply-input-${parentId}`);
+            if (textarea) {
+                textarea.focus();
+                autoResize(textarea);
+                textarea.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                        e.preventDefault();
+                        submitReply(parentId, articleId);
+                    }
+                    if (e.key === 'Escape') {
+                        closeReply(parentId);
+                    }
+                });
+            }
+        }, 50);
+    };
+
+    window.closeReply = function (parentId) {
+        const container = document.getElementById(`reply-container-${parentId}`);
+        if (container) container.innerHTML = '';
+    };
+
+    window.submitReply = async function (parentId, articleId) {
+        if (!state.token) {
+            toast('로그인이 필요합니다.', 'error');
+            return;
+        }
+        const input = document.getElementById(`reply-input-${parentId}`);
+        if (!input) return;
+        const content = input.value.trim();
+        if (!content) {
+            toast('답글 내용을 입력해주세요.', 'error');
+            return;
+        }
+        try {
+            await api(`/api/articles/${articleId}/comments`, {
+                method: 'POST',
+                body: JSON.stringify({ content, parentId })
+            });
+            toast('답글이 등록되었습니다.');
+            closeReply(parentId);
+            loadComments(articleId);
+        } catch (e) {
+            toast(e.message, 'error');
+        }
+    };
+
+    async function submitComment() {
+        if (!state.token) {
+            toast('로그인이 필요합니다.', 'error');
+            return;
+        }
+
+        const content = el.commentInput.value.trim();
+        if (!content) {
+            toast('댓글 내용을 입력해주세요.', 'error');
+            return;
+        }
+
+        try {
+            await api(`/api/articles/${state.currentArticle.id}/comments`, {
+                method: 'POST',
+                body: JSON.stringify({ content })
+            });
+
+            toast('댓글이 등록되었습니다.');
+            el.commentInput.value = '';
+            el.commentInput.style.height = 'auto';
+            loadComments(state.currentArticle.id);
+        } catch (e) {
+            toast(e.message, 'error');
+        }
+    }
+
+    async function deleteComment(commentId, articleId) {
+        if (!confirm('댓글을 삭제하시겠습니까?')) return;
+
+        try {
+            await api(`/api/comments/${commentId}`, { method: 'DELETE' });
+            toast('댓글이 삭제되었습니다.');
+            loadComments(articleId);
+        } catch (e) {
+            toast(e.message, 'error');
+        }
+    }
+
+    el.reload.onclick = resetFeed;
+    el.loadMore.onclick = () => loadArticles();
+    el.moodFilter.addEventListener('change', () => {
+        state.moodFilter = el.moodFilter.value;
+        resetFeed();
+    });
+
+    updateNav();
+    loadArticles(true);
+</script>
+</body>
+</html>
