@@ -51,4 +51,12 @@ public class ArticleController {
         User user = userService.findById(principal.getUserId());
         return ResponseEntity.ok(articleService.readMine(lastId, size, user));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ArticleResponse> update(@PathVariable Long id,
+                                                  @AuthenticationPrincipal UserPrincipal principal,
+                                                  @Valid @RequestBody ArticleRequest request) {
+        User user = userService.findById(principal.getUserId());
+        return ResponseEntity.ok(articleService.update(id, request, user));
+    }
 }
