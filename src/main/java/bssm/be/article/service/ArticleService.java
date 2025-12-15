@@ -4,6 +4,7 @@ import bssm.be.article.domain.Article;
 import bssm.be.article.dto.ArticleRequest;
 import bssm.be.article.dto.ArticleResponse;
 import bssm.be.article.repository.ArticleRepository;
+import bssm.be.common.exception.NotFoundException;
 import bssm.be.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,12 @@ public class ArticleService {
         }
         String key = status.trim().toLowerCase();
         return ALLOWED_STATUS.contains(key) ? key : "lost";
+    }
+
+    @Transactional(readOnly = true)
+    public ArticleResponse readOne(Long id) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
+        return new ArticleResponse(article);
     }
 }
