@@ -62,13 +62,7 @@ public class ArticleService {
                     ? articleRepository.findAllByOrderByIdDesc(pageable)
                     : articleRepository.findByIdLessThanOrderByIdDesc(lastId, pageable);
         }
-        List<ArticleResponse> items = slice.getContent().stream()
-                .map(ArticleResponse::new)
-                .toList();
-        Long nextCursor = slice.hasNext() && !items.isEmpty()
-                ? items.get(items.size() - 1).getId()
-                : null;
-        return new ArticleSliceResponse(items, nextCursor);
+        return getArticleSliceResponse(slice);
     }
 
     @Transactional(readOnly = true)
@@ -77,6 +71,10 @@ public class ArticleService {
         Slice<Article> slice = (lastId == null)
                 ? articleRepository.findByAuthorIdOrderByIdDesc(user.getId(), pageable)
                 : articleRepository.findByAuthorIdAndIdLessThanOrderByIdDesc(user.getId(), lastId, pageable);
+        return getArticleSliceResponse(slice);
+    }
+
+    private ArticleSliceResponse getArticleSliceResponse(Slice<Article> slice) {
         List<ArticleResponse> items = slice.getContent().stream()
                 .map(ArticleResponse::new)
                 .toList();
