@@ -5,6 +5,7 @@ import bssm.be.article.dto.ArticleRequest;
 import bssm.be.article.dto.ArticleResponse;
 import bssm.be.article.dto.ArticleSliceResponse;
 import bssm.be.article.repository.ArticleRepository;
+import bssm.be.comment.repository.CommentRepository;
 import bssm.be.common.exception.ForbiddenException;
 import bssm.be.common.exception.NotFoundException;
 import bssm.be.user.domain.User;
@@ -27,6 +28,7 @@ import java.util.Set;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final CommentRepository commentRepository;
     private static final Set<String> ALLOWED_STATUS = new HashSet<>(List.of("lost", "found", "resolved"));
 
     public ArticleResponse create(ArticleRequest request, User author) {
@@ -93,5 +95,15 @@ public class ArticleService {
         }
         article.update(request.getTitle(), request.getContent(), normalizeStatus(request.getStatus()));
         return new ArticleResponse(article);
+    }
+
+    public void delete(Long id, User user) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
+        if (!article.getAuthor().getId().equals(user.getId())) {
+            throw new ForbiddenException("작성자만 삭제할 수 있습니다.");
+        }
+        commentRepository.deleteByArticleId(id);
+        articleRepository.delete(article);
     }
 }
