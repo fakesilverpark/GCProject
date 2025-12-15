@@ -2,6 +2,7 @@ package bssm.be.user.service;
 
 import bssm.be.common.exception.BadRequestException;
 import bssm.be.common.exception.NotFoundException;
+import bssm.be.common.security.UserPrincipal;
 import bssm.be.user.domain.User;
 import bssm.be.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
