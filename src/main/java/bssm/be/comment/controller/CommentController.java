@@ -1,5 +1,6 @@
 package bssm.be.comment.controller;
 
+import bssm.be.comment.dto.CommentCreateRequest;
 import bssm.be.comment.dto.CommentResponse;
 import bssm.be.comment.service.CommentService;
 import bssm.be.common.security.UserPrincipal;
