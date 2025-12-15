@@ -63,4 +63,12 @@ public class Comment extends BaseTimeEntity {
                 ? "/" + segment
                 : parentPath + "/" + segment;
     }
+
+    public boolean isOwner(User user) {
+        return author.getId().equals(user.getId());
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

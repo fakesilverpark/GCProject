@@ -5,7 +5,9 @@ import bssm.be.article.repository.ArticleRepository;
 import bssm.be.comment.domain.Comment;
 import bssm.be.comment.dto.CommentCreateRequest;
 import bssm.be.comment.dto.CommentResponse;
+import bssm.be.comment.dto.CommentUpdateRequest;
 import bssm.be.comment.repository.CommentRepository;
+import bssm.be.common.exception.ForbiddenException;
 import bssm.be.common.exception.NotFoundException;
 import bssm.be.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +47,15 @@ public class CommentService {
         return commentRepository.findByArticleIdOrderByPathAsc(articleId).stream()
                 .map(CommentResponse::new)
                 .toList();
+    }
+
+    public CommentResponse update(Long commentId, CommentUpdateRequest request, User user) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("댓글을 찾을 수 없습니다."));
+        if (!comment.isOwner(user)) {
+            throw new ForbiddenException("작성자만 수정할 수 있습니다.");
+        }
+        comment.updateContent(request.getContent());
+        return new CommentResponse(comment);
     }
 }
