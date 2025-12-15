@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "comments")
+@NoArgsConstructor
 public class Comment extends BaseTimeEntity {
 
     private static final int SEGMENT_LENGTH = 12;
@@ -47,9 +49,6 @@ public class Comment extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean deleted = false;
 
-    protected Comment() {
-    }
-
     public Comment(Article article, User author, String content) {
         this.article = article;
         this.author = author;
@@ -70,5 +69,23 @@ public class Comment extends BaseTimeEntity {
 
     public void updateContent(String content) {
         this.content = content;
+    }
+
+    public void markDeleted() {
+        this.deleted = true;
+        this.content = "(deleted)";
+    }
+
+    public String parentPath() {
+        if (path == null || path.isBlank()) {
+            return null;
+        }
+        List<String> parts = Arrays.stream(path.split("/"))
+                .filter(s -> !s.isEmpty())
+                .toList();
+        if (parts.size() <= 1) {
+            return null;
+        }
+        return "/" + String.join("/", parts.subList(0, parts.size() - 1));
     }
 }

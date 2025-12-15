@@ -14,4 +14,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Optional<Comment> findByIdAndArticleId(Long id, Long articleId);
 
     List<Comment> findByArticleIdOrderByPathAsc(Long articleId);
+
+    Optional<Comment> findByPath(String path);
+
+    @Query("select case when count(c)>0 then true else false end from Comment c where c.path like concat(:pathPrefix, '/%') and c.id <> :selfId")
+    boolean existsChild(@Param("pathPrefix") String pathPrefix, @Param("selfId") Long selfId);
 }

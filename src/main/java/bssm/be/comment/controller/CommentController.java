@@ -43,4 +43,12 @@ public class CommentController {
         User user = userService.findById(principal.getUserId());
         return ResponseEntity.ok(commentService.update(commentId, request, user));
     }
+
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal UserPrincipal principal,
+                                       @PathVariable Long commentId) {
+        User user = userService.findById(principal.getUserId());
+        commentService.delete(commentId, user);
+        return ResponseEntity.noContent().build();
+    }
 }

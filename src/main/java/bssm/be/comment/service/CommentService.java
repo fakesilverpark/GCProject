@@ -58,4 +58,26 @@ public class CommentService {
         comment.updateContent(request.getContent());
         return new CommentResponse(comment);
     }
+
+    public void delete(Long commentId, User user) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("댓글을 찾을 수 없습니다."));
+        if (!comment.isOwner(user)) {
+            throw new ForbiddenException("작성자만 삭제할 수 있습니다.");
+        }
+        comment.markDeleted();
+        purgeIfOrphan(comment);
+    }
+
+    private void purgeIfOrphan(Comment comment) {
+        boolean hasChild = commentRepository.existsChild(comment.getPath(), comment.getId());
+        if (hasChild) {
+            return;
+        }
+        commentRepository.delete(comment);
+        String parentPath = comment.parentPath();
+        if (parentPath != null) {
+            commentRepository.findByPath(parentPath).ifPresent(this::purgeIfOrphan);
+        }
+    }
 }
