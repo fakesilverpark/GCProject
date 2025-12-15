@@ -52,9 +52,9 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticleSliceResponse readAll(Long lastId, int size, String mood) {
+    public ArticleSliceResponse readAll(Long lastId, int size, String status) {
         Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "id"));
-        String normalizedStatus = normalizeStatus(mood);
+        String normalizedStatus = normalizeStatus(status);
         Slice<Article> slice;
         if (StringUtils.hasText(normalizedStatus)) {
             slice = (lastId == null)

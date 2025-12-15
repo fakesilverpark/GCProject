@@ -40,8 +40,8 @@ public class ArticleController {
     public ResponseEntity<ArticleSliceResponse> readAll(
             @RequestParam(required = false) Long lastId,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String mood) {
-        return ResponseEntity.ok(articleService.readAll(lastId, size, mood));
+            @RequestParam(required = false) String status) {
+        return ResponseEntity.ok(articleService.readAll(lastId, size, status));
     }
 
     @GetMapping("/mine")
