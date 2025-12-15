@@ -56,4 +56,11 @@ public class Comment extends BaseTimeEntity {
         this.content = content;
         this.path = "";
     }
+
+    public void assignPath(String parentPath) {
+        String segment = String.format("%0" + SEGMENT_LENGTH + "d", id);
+        this.path = (parentPath == null || parentPath.isBlank())
+                ? "/" + segment
+                : parentPath + "/" + segment;
+    }
 }
