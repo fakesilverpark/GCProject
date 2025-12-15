@@ -59,4 +59,12 @@ public class ArticleController {
         User user = userService.findById(principal.getUserId());
         return ResponseEntity.ok(articleService.update(id, request, user));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                       @AuthenticationPrincipal UserPrincipal principal) {
+        User user = userService.findById(principal.getUserId());
+        articleService.delete(id, user);
+        return ResponseEntity.noContent().build();
+    }
 }
