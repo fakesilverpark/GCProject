@@ -10,4 +10,6 @@ import org.springframework.data.repository.query.Param;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     void deleteByArticleId(Long articleId);
+
+    Optional<Comment> findByIdAndArticleId(Long id, Long articleId);
 }
