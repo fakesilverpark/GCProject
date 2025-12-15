@@ -49,9 +49,9 @@ public class Article extends BaseTimeEntity {
         this.status = StringUtils.hasText(status) ? status : "lost";
     }
 
-    public void update(String title, String content, String mood) {
+    public void update(String title, String content, String status) {
         this.title = title;
         this.content = content;
-        this.status = StringUtils.hasText(mood) ? mood : this.status;
+        this.status = StringUtils.hasText(status) ? status : this.status;
     }
 }

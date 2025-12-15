@@ -58,8 +58,8 @@ public class ArticleService {
         Slice<Article> slice;
         if (StringUtils.hasText(normalizedStatus)) {
             slice = (lastId == null)
-                    ? articleRepository.findByStatusOrderByIdDesc(normalizedStatus, pageable)
                     : articleRepository.findByStatusAndIdLessThanOrderByIdDesc(normalizedStatus, lastId, pageable);
+                    ? articleRepository.findByStatusOrderByIdDesc(normalizedStatus, pageable)
         } else {
             slice = (lastId == null)
                     ? articleRepository.findAllByOrderByIdDesc(pageable)
