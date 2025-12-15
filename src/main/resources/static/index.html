@@ -817,7 +817,7 @@
         <div class="card-header">
             <h2 class="card-title">최근 분실/습득</h2>
             <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
-                <select id="mood-filter" style="padding: 0.75rem 1rem; background: var(--surface-hover); border: 1px solid var(--border); border-radius: 10px; font-size: 0.875rem; font-weight: 600; cursor: pointer; font-family: 'Pretendard', sans-serif;">
+                <select id="status-filter" style="padding: 0.75rem 1rem; background: var(--surface-hover); border: 1px solid var(--border); border-radius: 10px; font-size: 0.875rem; font-weight: 600; cursor: pointer; font-family: 'Pretendard', sans-serif;">
                     <option value="">전체 보기</option>
                     <option value="lost">분실</option>
                     <option value="found">습득</option>
@@ -868,7 +868,7 @@
     const isDevFrontend = window.location.port && window.location.port !== '8080';
     const API_BASE = isDevFrontend ? 'http://localhost:8080' : window.location.origin;
 
-    const MOODS = {
+    const STATUSES = {
         lost: { label: '분실', emoji: '🆘' },
         found: { label: '습득', emoji: '📦' },
         resolved: { label: '해결', emoji: '✅' }
@@ -879,14 +879,14 @@
         user: JSON.parse(localStorage.getItem('gc-user') || 'null'),
         nextCursor: null,
         loading: false,
-        moodFilter: '',
+        statusFilter: '',
         currentArticle: null
     };
 
     const el = {
         nav: document.getElementById('nav'),
         reload: document.getElementById('reload-btn'),
-        moodFilter: document.getElementById('mood-filter'),
+        statusFilter: document.getElementById('status-filter'),
         articleList: document.getElementById('article-list'),
         loadMore: document.getElementById('load-more'),
         toast: document.getElementById('toast-container'),
@@ -979,8 +979,8 @@
         const url = new URL('/api/articles', API_BASE);
         url.searchParams.append('size', 5);
 
-        if (state.moodFilter && state.moodFilter !== '') {
-            url.searchParams.append('mood', state.moodFilter);
+        if (state.statusFilter && state.statusFilter !== '') {
+            url.searchParams.append('status', state.statusFilter);
         }
 
         if (!reset && state.nextCursor) {
@@ -1010,7 +1010,7 @@
     }
 
     function renderArticle(article) {
-        const moodMeta = MOODS[article.mood] || MOODS.lost;
+        const statusMeta = STATUSES[article.mood] || STATUSES.lost;
         const articleEl = document.createElement('div');
         articleEl.className = 'article';
         articleEl.onclick = () => openModal(article);
@@ -1024,7 +1024,7 @@
                         <span>${escapeHtml(article.createdAt.replace('T', ' ').substring(0, 19))}</span>
                     </div>
                 </div>
-                <span class="badge badge-${article.mood}">${moodMeta.label}</span>
+                <span class="badge badge-${article.mood}">${statusMeta.label}</span>
             </div>
             <div class="article-body">${escapeHtml(article.content)}</div>
         `;
@@ -1033,11 +1033,11 @@
 
     async function openModal(article) {
         state.currentArticle = article;
-        const moodMeta = MOODS[article.mood] || MOODS.lost;
+        const statusMeta = STATUSES[article.mood] || STATUSES.lost;
 
         el.modalTitle.textContent = article.title;
         el.modalMeta.innerHTML = `
-            <span class="badge badge-${article.mood}">${moodMeta.label}</span>
+            <span class="badge badge-${article.mood}">${statusMeta.label}</span>
             <span>${escapeHtml(article.author.displayName)}</span>
             <span>·</span>
             <span>${escapeHtml(article.createdAt.replace('T', ' ').substring(0, 19))}</span>
@@ -1269,8 +1269,8 @@
 
     el.reload.onclick = resetFeed;
     el.loadMore.onclick = () => loadArticles();
-    el.moodFilter.addEventListener('change', () => {
-        state.moodFilter = el.moodFilter.value;
+    el.statusFilter.addEventListener('change', () => {
+        state.statusFilter = el.statusFilter.value;
         resetFeed();
     });
 
