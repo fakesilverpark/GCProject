@@ -5,6 +5,7 @@ import bssm.be.article.dto.ArticleRequest;
 import bssm.be.article.dto.ArticleResponse;
 import bssm.be.article.dto.ArticleSliceResponse;
 import bssm.be.article.repository.ArticleRepository;
+import bssm.be.common.exception.ForbiddenException;
 import bssm.be.common.exception.NotFoundException;
 import bssm.be.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -82,5 +83,15 @@ public class ArticleService {
                 ? items.get(items.size() - 1).getId()
                 : null;
         return new ArticleSliceResponse(items, nextCursor);
+    }
+
+    public ArticleResponse update(Long id, ArticleRequest request, User user) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
+        if (!article.getAuthor().getId().equals(user.getId())) {
+            throw new ForbiddenException("작성자만 수정할 수 있습니다.");
+        }
+        article.update(request.getTitle(), request.getContent(), normalizeStatus(request.getStatus()));
+        return new ArticleResponse(article);
     }
 }
