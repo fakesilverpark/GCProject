@@ -43,4 +43,12 @@ public class ArticleController {
             @RequestParam(required = false) String mood) {
         return ResponseEntity.ok(articleService.readAll(lastId, size, mood));
     }
+
+    @GetMapping("/mine")
+    public ResponseEntity<ArticleSliceResponse> readMine(@AuthenticationPrincipal UserPrincipal principal,
+                                                         @RequestParam(required = false) Long lastId,
+                                                         @RequestParam(defaultValue = "10") int size) {
+        User user = userService.findById(principal.getUserId());
+        return ResponseEntity.ok(articleService.readMine(lastId, size, user));
+    }
 }
