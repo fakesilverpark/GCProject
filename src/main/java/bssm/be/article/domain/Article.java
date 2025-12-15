@@ -12,8 +12,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
 import org.springframework.util.StringUtils;
 
+@Getter
 @Entity
 @Table(name = "articles")
 public class Article extends BaseTimeEntity {
@@ -35,41 +37,21 @@ public class Article extends BaseTimeEntity {
     private User author;
 
     @Column(nullable = false, length = 32)
-    private String mood;
+    private String status;
 
     protected Article() {
     }
 
-    public Article(String title, String content, String mood, User author) {
+    public Article(String title, String content, String status, User author) {
         this.title = title;
         this.content = content;
         this.author = author;
-        this.mood = StringUtils.hasText(mood) ? mood : "lost";
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public String getMood() {
-        return mood;
+        this.status = StringUtils.hasText(status) ? status : "lost";
     }
 
     public void update(String title, String content, String mood) {
         this.title = title;
         this.content = content;
-        this.mood = StringUtils.hasText(mood) ? mood : this.mood;
+        this.status = StringUtils.hasText(mood) ? mood : this.status;
     }
 }
