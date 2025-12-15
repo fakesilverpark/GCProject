@@ -1,5 +1,6 @@
 package bssm.be.article.controller;
 
+import bssm.be.article.dto.ArticleResponse;
 import bssm.be.article.service.ArticleService;
 import bssm.be.common.security.UserPrincipal;
 import bssm.be.user.domain.User;
