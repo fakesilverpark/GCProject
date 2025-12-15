@@ -70,4 +70,19 @@ public class ArticleService {
                 : null;
         return new ArticleSliceResponse(items, nextCursor);
     }
+
+    @Transactional(readOnly = true)
+    public ArticleSliceResponse readMine(Long lastId, int size, User user) {
+        Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "id"));
+        Slice<Article> slice = (lastId == null)
+                ? articleRepository.findByAuthorIdOrderByIdDesc(user.getId(), pageable)
+                : articleRepository.findByAuthorIdAndIdLessThanOrderByIdDesc(user.getId(), lastId, pageable);
+        List<ArticleResponse> items = slice.getContent().stream()
+                .map(ArticleResponse::new)
+                .toList();
+        Long nextCursor = slice.hasNext() && !items.isEmpty()
+                ? items.get(items.size() - 1).getId()
+                : null;
+        return new ArticleSliceResponse(items, nextCursor);
+    }
 }

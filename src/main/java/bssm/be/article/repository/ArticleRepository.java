@@ -16,4 +16,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     Slice<Article> findByStatusOrderByIdDesc(String status, Pageable pageable);
 
     Slice<Article> findByStatusAndIdLessThanOrderByIdDesc(String status, Long id, Pageable pageable);
+
+    Slice<Article> findByAuthorIdOrderByIdDesc(Long authorId, Pageable pageable);
+
+    Slice<Article> findByAuthorIdAndIdLessThanOrderByIdDesc(Long authorId, Long id, Pageable pageable);
 }
