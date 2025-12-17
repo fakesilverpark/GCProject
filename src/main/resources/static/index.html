@@ -791,6 +791,50 @@
                 margin-left: 1.5rem;
             }
         }
+
+        /* 댓글 depth별 스타일 */
+        .comment {
+            position: relative;
+            padding: 1.25rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+            border-radius: 12px;
+        }
+
+        /* depth 1 */
+        .comment.has-depth {
+            margin-left: 2rem;
+            background: var(--surface-hover);
+        }
+
+        /* depth 2 이상 */
+        .comment.depth-2 {
+            margin-left: 4rem;
+            background: #eef2ff;
+        }
+
+        .comment.depth-3 {
+            margin-left: 6rem;
+            background: #e0e7ff;
+        }
+
+        .comment.has-depth::before {
+            content: '';
+            position: absolute;
+            left: -1.25rem;
+            top: 0;
+            width: 1rem;
+            height: 100%;
+            border-left: 2px solid var(--accent);
+            border-bottom: 2px solid var(--accent);
+            border-radius: 0 0 0 12px;
+            opacity: 0.4;
+        }
+
+        .comment.has-depth .comment-actions {
+            margin-left: 0.5rem;
+        }
+
     </style>
 </head>
 <body>
@@ -1112,7 +1156,12 @@
     function renderComment(comment, articleId) {
         const depth = Math.max(0, comment.path.split('/').filter(Boolean).length - 1);
         const commentEl = document.createElement('div');
-        commentEl.className = 'comment' + (depth > 0 ? ' has-depth' : '');
+        commentEl.className = 'comment';
+
+        if (depth > 0) {
+            commentEl.classList.add('has-depth');
+            commentEl.classList.add(`depth-${Math.min(depth, 3)}`); // 최대 3단계
+        }
 
         const isOwner = state.user && state.user.id === comment.author.id;
         const isArticleAuthor = state.currentArticle && state.currentArticle.author.id === comment.author.id;
