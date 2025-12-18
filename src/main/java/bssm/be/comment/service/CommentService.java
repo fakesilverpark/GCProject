@@ -70,6 +70,9 @@ public class CommentService {
     }
 
     private void purgeIfOrphan(Comment comment) {
+        if (!comment.isDeleted()) {
+            return;
+        }
         boolean hasChild = commentRepository.existsChild(comment.getPath(), comment.getId());
         if (hasChild) {
             return;
