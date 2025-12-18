@@ -32,16 +32,27 @@ public class ArticleService {
     private static final Set<String> ALLOWED_STATUS = new HashSet<>(List.of("lost", "found", "resolved"));
 
     public ArticleResponse create(ArticleRequest request, User author) {
-        Article article = new Article(request.getTitle(), request.getContent(), normalizeStatus(request.getStatus()), author);
+        Article article = new Article(request.getTitle(), request.getContent(), normalizeStatusForWrite(request.getStatus()), author);
         return new ArticleResponse(articleRepository.save(article));
     }
 
-    private String normalizeStatus(String status) {
+    private String normalizeStatusForWrite(String status) {
         if (!StringUtils.hasText(status)) {
             return "lost";
         }
         String key = status.trim().toLowerCase();
         return ALLOWED_STATUS.contains(key) ? key : "lost";
+    }
+
+    private String normalizeStatusForFilter(String status) {
+        if (!StringUtils.hasText(status)) {
+            return null;
+        }
+        String key = status.trim().toLowerCase();
+        if ("all".equals(key)) {
+            return null;
+        }
+        return ALLOWED_STATUS.contains(key) ? key : null;
     }
 
     @Transactional(readOnly = true)
@@ -54,7 +65,7 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public ArticleSliceResponse readAll(Long lastId, int size, String status) {
         Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "id"));
-        String normalizedStatus = normalizeStatus(status);
+        String normalizedStatus = normalizeStatusForFilter(status);
         Slice<Article> slice;
         if (StringUtils.hasText(normalizedStatus)) {
             slice = (lastId == null)
@@ -93,7 +104,7 @@ public class ArticleService {
         if (!article.getAuthor().getId().equals(user.getId())) {
             throw new ForbiddenException("작성자만 수정할 수 있습니다.");
         }
-        article.update(request.getTitle(), request.getContent(), normalizeStatus(request.getStatus()));
+        article.update(request.getTitle(), request.getContent(), normalizeStatusForWrite(request.getStatus()));
         return new ArticleResponse(article);
     }
 
