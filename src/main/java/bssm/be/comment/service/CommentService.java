@@ -66,18 +66,5 @@ public class CommentService {
             throw new ForbiddenException("작성자만 삭제할 수 있습니다.");
         }
         comment.markDeleted();
-        purgeIfOrphan(comment);
-    }
-
-    private void purgeIfOrphan(Comment comment) {
-        boolean hasChild = commentRepository.existsChild(comment.getPath(), comment.getId());
-        if (hasChild) {
-            return;
-        }
-        commentRepository.delete(comment);
-        String parentPath = comment.parentPath();
-        if (parentPath != null) {
-            commentRepository.findByPath(parentPath).ifPresent(this::purgeIfOrphan);
-        }
     }
 }
